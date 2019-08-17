@@ -1,33 +1,38 @@
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const vector = new THREE.Vector3();
-const renderer = new THREE.WebGLRenderer();
-const loader = new THREE.GLTFLoader();
-renderer.setSize(window.innerWidth / 2, window.innerHeight / 2, false);
+// Setting scene for 3D Object
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var vector = new THREE.Vector3();
+var renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(0xffffff, 1)
+renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Creating 3D object
 var geometry = new THREE.BoxGeometry(1, 2, 1);
 var material = new THREE.MeshBasicMaterial({
-	color: 0x00ff00,
+	color: 'rgb(3, 197, 221)',
+	wireframe: true,
+	wireframeLinewidth: 1,
 });
 
 var cube = new THREE.Mesh(geometry, material);
-
-loader.load(
-	'./js/scene.gltf',
-	function(gltf) {
-		scene.add(gltf.scene);
-		console.log('loaded');
-	},
-	undefined,
-	function(error) {
-		console.error(error);
-	}
-);
+var drill = document.querySelector('a-entity').object3d;
 
 scene.add(cube);
+scene.add(drill);
 camera.position.z = 5;
 
+// Optional animation to rotate the element
+var animate = function() {
+	requestAnimationFrame(animate);
+	cube.rotation.x += 0.01;
+	cube.rotation.y += 0.01;
+	renderer.render(scene, camera);
+};
+
+animate();
+
+// Creating Canavs for video Input
 const video = document.getElementById('myvideo');
 const handimg = document.getElementById('handimage');
 const canvas = document.getElementById('canvas');
@@ -53,18 +58,7 @@ handTrack.load(modelParams).then((lmodel) => {
 	trackButton.disabled = false;
 });
 
-function toggleVideo() {
-	if (!isVideo) {
-		updateNote.innerText = 'Starting video';
-		startVideo();
-	} else {
-		updateNote.innerText = 'Stopping video';
-		handTrack.stopVideo(video);
-		isVideo = false;
-		updateNote.innerText = 'Video stopped';
-	}
-}
-
+// Method to start a video
 function startVideo() {
 	handTrack.startVideo(video).then(function(status) {
 		if (status) {
@@ -77,6 +71,20 @@ function startVideo() {
 	});
 }
 
+// Method to toggle a video
+function toggleVideo() {
+	if (!isVideo) {
+		updateNote.innerText = 'Starting video';
+		startVideo();
+	} else {
+		updateNote.innerText = 'Stopping video';
+		handTrack.stopVideo(video);
+		isVideo = false;
+		updateNote.innerText = 'Video stopped';
+	}
+}
+
+//Method to detect movement
 function runDetection() {
 	model.detect(video).then((predictions) => {
 		model.renderPredictions(predictions, canvas, context, video);
@@ -89,6 +97,7 @@ function runDetection() {
 	});
 }
 
+//Method to Change prediction data into useful information
 function changeData(value) {
 	let midvalX = value[0] + value[2] / 2;
 	let midvalY = value[1] + value[3] / 2;
@@ -99,9 +108,13 @@ function changeData(value) {
 	moveTheBox({ x: (midvalX - 300) / 600, y: (midvalY - 250) / 500 });
 }
 
-//Method to use prediction data to render cube accordingly
+//Method to use prediction data to render cude accordingly
 function moveTheBox(value) {
 	cube.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
 	cube.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+
+	drill.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+	drill.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+
 	renderer.render(scene, camera);
 }
