@@ -3,23 +3,23 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var vector = new THREE.Vector3();
 var renderer = new THREE.WebGLRenderer();
-renderer.setClearColor(0xffffff, 1)
+
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 1);
+
 document.body.appendChild(renderer.domElement);
 
 // Creating 3D object
 var geometry = new THREE.BoxGeometry(1, 2, 1);
 var material = new THREE.MeshBasicMaterial({
 	color: 'rgb(3, 197, 221)',
-	wireframe: true,
+	wireframe: false,
 	wireframeLinewidth: 1,
 });
 
 var cube = new THREE.Mesh(geometry, material);
-var drill = document.querySelector('a-entity').object3d;
 
 scene.add(cube);
-scene.add(drill);
 camera.position.z = 5;
 
 // Optional animation to rotate the element
@@ -112,9 +112,5 @@ function changeData(value) {
 function moveTheBox(value) {
 	cube.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
 	cube.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
-
-	drill.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
-	drill.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
-
 	renderer.render(scene, camera);
 }
