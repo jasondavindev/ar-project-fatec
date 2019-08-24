@@ -1,15 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>The Hand Trick</title>
-
-		<script src="./js/aframe.js"></script>
-		<script src="./js/aframe-ar.js"></script>
-	</head>
-	<body>
+<html>
+	<script src="./js/aframe.js"></script>
+	<script src="./js/aframe-ar.js"></script>
+	<body style="margin : 0px; overflow: hidden;">
 		<a-scene embedded arjs>
 			<a-assets>
 				<a-asset-item
@@ -18,9 +11,9 @@
 				></a-asset-item>
 				<!--<a-asset-item id="tree" src="https://raw.githubusercontent.com/jasondavindev/ar-project-fatec/master/js/scene.gltf"></a-asset-item>-->
 			</a-assets>
-			<a-entity gltf-model="#tree" scale="10 10 10" position="0 0 0"></a-entity>
+			<a-entity gltf-model="#tree" scale="5 5 5" position="1 2 1"></a-entity>
 		</a-scene>
-		<!-- Video for handtracker -->
+
 		<div class="tracker">
 			<video id="myvideo"></video>
 			<canvas id="canvas" class="border"></canvas>

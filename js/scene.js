@@ -1,11 +1,12 @@
 // Setting scene for 3D Object
+var drill = null;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var vector = new THREE.Vector3();
 var renderer = new THREE.WebGLRenderer();
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0x000000, 1);
+renderer.setClearColor(0xFFFFFF, 1);
 
 document.body.appendChild(renderer.domElement);
 
@@ -17,17 +18,14 @@ var material = new THREE.MeshBasicMaterial({
 	wireframeLinewidth: 1,
 });
 
-var cube = new THREE.Mesh(geometry, material);
-
-scene.add(cube);
 camera.position.z = 5;
 
 // Optional animation to rotate the element
 var animate = function() {
-	requestAnimationFrame(animate);
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-	renderer.render(scene, camera);
+	// requestAnimationFrame(animate);
+	// cube.rotation.x += 0.01;
+	// cube.rotation.y += 0.01;
+	// renderer.render(scene, camera);
 };
 
 animate();
@@ -75,6 +73,8 @@ function startVideo() {
 function toggleVideo() {
 	if (!isVideo) {
 		updateNote.innerText = 'Starting video';
+		drill = document.querySelector('a-entity');
+		scene.add(drill.object3D);
 		startVideo();
 	} else {
 		updateNote.innerText = 'Stopping video';
@@ -110,7 +110,11 @@ function changeData(value) {
 
 //Method to use prediction data to render cude accordingly
 function moveTheBox(value) {
-	cube.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
-	cube.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+	// cube.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+	// cube.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+
+	drill.object3D.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+	drill.object3D.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+
 	renderer.render(scene, camera);
 }
