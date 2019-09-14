@@ -1,4 +1,5 @@
 var drill = null;
+var tripod = null;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var vector = new THREE.Vector3();
@@ -76,7 +77,9 @@ function toggleVideo() {
 	if (!isVideo) {
 		updateNote.innerText = 'Starting video';
 		drill = document.querySelector('a-entity');
+		tripod = document.querySelectorAll('a-entity')[1];
 		scene.add(drill.object3D);
+		scene.add(tripod.object3D);
 		startVideo();
 	} else {
 		updateNote.innerText = 'Stopping video';
