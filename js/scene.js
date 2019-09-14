@@ -1,4 +1,3 @@
-// Setting scene for 3D Object
 var drill = null;
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -19,6 +18,9 @@ var material = new THREE.MeshBasicMaterial({
 });
 
 camera.position.z = 5;
+      
+var light = new THREE.AmbientLight(0xffffff); // soft white light
+scene.add(light);
 
 // Optional animation to rotate the element
 var animate = function() {
