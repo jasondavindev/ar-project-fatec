@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+		<link rel="stylesheet" href="css/style.css">
+
+		<title>The Hand Trick</title>
+
+		<script src="./js/aframe.js"></script>
+		<script src="./js/aframe-ar.js"></script>
+	</head>
+	<body>
+		<a-scene embedded arjs>
+			<a-assets>
+				<a-asset-item id="tree" src="./js/texture/scene.gltf"></a-asset-item>
+				<a-asset-item id="tripod" src="./js/tripod/tripod.gltf"></a-asset-item>
+				<!--<a-asset-item id="tree" src="https://raw.githubusercontent.com/jasondavindev/ar-project-fatec/master/js/scene.gltf"></a-asset-item>-->
+			</a-assets>
+			<a-entity gltf-model="#tree" scale="10 10 10" position="0 0 0"></a-entity>
+			<a-entity gltf-model="#tripod" scale="0.30 0.35 0.35" position="-2 1 0"></a-entity>
+		</a-scene>
+		<!-- Video for handtracker -->
+		<div class="tracker">
+			<video id="myvideo"></video>
+			<canvas id="canvas" class="border"></canvas>
+			<p>
+				<button id="trackbutton" disabled onclick="toggleVideo()">Button</button>
+			</p>
+			<div id="updatenote">hello</div>
+		</div>
+		<div class="data">
+			<div class="hand-1">
+				<p id="hand-x">X: <span>0</span></p>
+				<p id="hand-y">Y: <span>0</span></p>
+			</div>
+		</div>
+
+		<!-- <script src="./js/three.js"></script> -->
+		<script src="./js/handtrack.js"></script>
+		<script src="./js/scene.js"></script>
+	</body>
+</html>
