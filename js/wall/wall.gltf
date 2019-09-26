@@ -47,10 +47,26 @@
             "mesh" : 0,
             "name" : "Chapa",
             "scale" : [
-                0.10000000149011612,
-                0.10000000149011612,
-                0.10000000149011612
+                0.009999999776482582,
+                0.009999999776482582,
+                0.009999999776482582
             ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Material.001",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.7880848050117493,
+                    0.8000000715255737,
+                    0.02461226098239422,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
         }
     ],
     "meshes" : [
@@ -62,7 +78,8 @@
                         "POSITION" : 0,
                         "NORMAL" : 1
                     },
-                    "indices" : 2
+                    "indices" : 2,
+                    "material" : 0
                 }
             ]
         }
