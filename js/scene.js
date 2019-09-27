@@ -1,5 +1,6 @@
 let drill = null;
 let tripod = null;
+let wall = null;
 let grasped = false;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -50,8 +51,10 @@ async function init() {
 
 	drill = document.querySelector('a-entity');
 	tripod = document.querySelectorAll('a-entity')[1];
+	wall = document.querySelectorAll('a-entity')[2];
 	scene.add(drill.object3D);
 	scene.add(tripod.object3D);
+	scene.add(wall.object3D);
 
 	const box = new THREE.Box3().setFromObject(drill.object3D);
 	drillDimensions.x = box.max.x;
