@@ -1,9 +1,9 @@
 # Projeto Realidade Aumentada
 
-<center>
-![Fatec](https://www.grupoescolar.com/a/b/69E28.jpg)
-### FATEC São José dos Campos - 3º Banco de Dados
-</center>
+<p align="center">
+  <img src="https://www.grupoescolar.com/a/b/69E28.jpg">
+  <h2>FATEC São José dos Campos - 3º Banco de Dados</h2>
+</p>
 
 ### Alunos
 
