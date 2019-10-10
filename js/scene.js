@@ -1,15 +1,24 @@
 let drill = null;
 let tripod = null;
 let wall = null;
+let drillAndTripodGrasped = false;
+let drillCollidingWall = false;
+
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+	75,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	1000
+);
 const renderer = new THREE.WebGLRenderer();
 const drillDimensions = {};
 const wallDimensions = {};
 const RANGE_COLLISION_DEFAULT = 2;
+const RANGE_RECTANGLE_COLLISION = 0.4;
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xffffff, 1);
+renderer.setClearColor(0x666666, 1);
 
 document.body.appendChild(renderer.domElement);
 
@@ -19,7 +28,7 @@ const light = new THREE.AmbientLight(0xffffff); // soft white light
 scene.add(light);
 
 // Optional animation to rotate the element
-const animate = function () {
+const animate = function() {
 	// requestAnimationFrame(animate);
 	// renderer.render(scene, camera);
 };
@@ -111,14 +120,34 @@ async function runDetection() {
 }
 
 function performCollisionDrillAndTripod() {
+	if (drillAndTripodGrasped) {
+		graspDrillAndTripod();
+		return;
+	}
+
 	if (collisionByRange(drill.object3D, tripod.object3D, RANGE_COLLISION_DEFAULT)) {
+		drillAndTripodGrasped = true;
 		graspDrillAndTripod();
 	}
 }
 
 function performCollisionDrillAndWall() {
-	if (collisionByDimensions(drill.object3D, wall.object3D, wallDimensions.y, wallDimensions.x)) {
-		console.log("menino json");
+	if (
+		collisionByDimensions(
+			drill.object3D,
+			wall.object3D,
+			wallDimensions.y,
+			wallDimensions.x,
+			RANGE_RECTANGLE_COLLISION
+		)
+	) {
+		drillCollidingWall = true;
+
+		if (!drillAndTripodGrasped) {
+			alert('Estourou tudo!!!');
+		}
+	} else {
+		drillCollidingWall = false;
 	}
 }
 
@@ -127,30 +156,55 @@ function changeData(value) {
 	let midvalX = value[0] + value[2] / 2;
 	let midvalY = value[1] + value[3] / 2;
 
-	// document.querySelector('.hand-1 #hand-x span').innerHTML = midvalX;
-	// document.querySelector('.hand-1 #hand-y span').innerHTML = midvalY;
-
-	moveTheBox({ x: (midvalX - 300) / 600, y: (midvalY - 250) / 500 });
+	moveTheDrill({ x: (midvalX - 300) / 600, y: (midvalY - 250) / 500 });
 }
 
 //Method to use prediction data to render cude accordingly
-function moveTheBox(value) {
-	drill.object3D.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+function moveTheDrill(value) {
+	if (!lockDrillXAxis(value)) {
+		drill.object3D.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+	}
+
 	drill.object3D.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
 	renderer.render(scene, camera);
 }
 
 function collisionByRange(object, target, range) {
-	return object.position.x >= target.position.x - range && object.position.x <= target.position.x + range && object.position.y >= target.position.y - range && object.position.y <= target.position.y + range;
+	return (
+		object.position.x >= target.position.x - range &&
+		object.position.x <= target.position.x + range &&
+		object.position.y >= target.position.y - range &&
+		object.position.y <= target.position.y + range
+	);
 }
 
-function collisionByDimensions(object, target, height, width) {
-	return object.position.x >= target.position.x - width / 2 && object.position.x <= target.position.x + width / 2 && object.position.y >= target.position.y - height / 2 && object.position.y <= target.position.y + height / 2;
+function collisionByDimensions(object, target, height, width, range) {
+	return (
+		object.position.x + range >= target.position.x - width / 2 &&
+		object.position.x - range <= target.position.x + width / 2 &&
+		object.position.y + range >= target.position.y - height / 2 &&
+		object.position.y - range <= target.position.y + height / 2
+	);
 }
 
 function graspDrillAndTripod() {
 	tripod.object3D.position.x = drill.object3D.position.x - drillDimensions.x * 2;
-	tripod.object3D.position.y = drill.object3D.position.y + (drillDimensions.y - drillDimensions.y * 0.2);
+	tripod.object3D.position.y =
+		drill.object3D.position.y + (drillDimensions.y - drillDimensions.y * 0.18);
+}
+
+function lockDrillXAxis(value) {
+	if (!drillCollidingWall) {
+		return false;
+	}
+
+	const newDrillXPosition = ((window.innerWidth * value.x) / window.innerWidth) * 5;
+
+	if (newDrillXPosition < drill.object3D.position.x) {
+		return true;
+	}
+
+	return false;
 }
 
 init();
