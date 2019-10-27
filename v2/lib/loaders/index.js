@@ -1,9 +1,8 @@
 import devices from './devices';
-import renderer from './renderer';
-import scene from './scene';
+import * as scene from './scene';
 import video from './video';
 import posenet from './posenet';
-import models from './models';
+import * as models from './models';
 
 export default async function() {
 	const objVideo = video();
@@ -14,10 +13,8 @@ export default async function() {
 		minConfidence: 0.5,
 	};
 
-	const ia = posenet(objVideo, options);
-	const objRenderer = renderer();
-	const objScene = scene();
-	models(objScene.scene);
-	objRenderer.render(objScene.scene, objScene.camera);
-	document.body.appendChild(objRenderer.domElement);
+	posenet(objVideo, options);
+
+	scene.animate();
+	models.load(scene.scene);
 }

@@ -1,14 +1,20 @@
 import GLTFLoader from 'three-gltf-loader';
 
-export default function(scene) {
+const axis = {};
+let drill;
+
+export function load(scene) {
 	const loader = new GLTFLoader();
+	const modelURL = '../../resources/drill/texture.gltf';
 
 	loader.load(
-		'../../js/texture/scene.gltf',
+		modelURL,
 		(gltf) => {
 			// called when the resource is loaded
-			console.log(gltf.scene);
+			gltf.scene.scale.set(10, 10, 10);
+			gltf.scene.position.set(0, 0, 0);
 			scene.add(gltf.scene);
+			drill = gltf.scene;
 		},
 		(xhr) => {
 			// called while loading is progressing
@@ -20,3 +26,24 @@ export default function(scene) {
 		}
 	);
 }
+
+export function animate(poses) {
+	for (const pose of poses) {
+		const keypoint = pose.pose.keypoints[9];
+
+		if (keypoint.score > 0.3) {
+			axis.x = keypoint.position.x;
+			axis.y = keypoint.position.y;
+		}
+	}
+
+	changeAxis();
+}
+
+const changeAxis = () => {
+	if (axis.x && axis.y && drill) {
+		drill.position.x = axis.x / 100;
+		drill.position.y = axis.y / 100;
+		console.log(axis);
+	}
+};
