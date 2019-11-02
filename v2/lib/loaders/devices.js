@@ -5,6 +5,7 @@ export default async function(video) {
 			audio: false,
 		});
 
+		/* eslint-disable no-param-reassign */
 		video.srcObject = stream;
 	} catch (error) {
 		console.error(`A error occurred! ${error.message}`);
