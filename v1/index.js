@@ -3,7 +3,12 @@ let tripod = null;
 let wall = null;
 let grasped = false;
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+	75,
+	window.innerWidth / window.innerHeight,
+	0.1,
+	1000
+);
 const renderer = new THREE.WebGLRenderer();
 const drillDimensions = {};
 
@@ -29,8 +34,8 @@ animate();
 const video = document.getElementById('myvideo');
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
-let trackButton = document.getElementById('trackbutton');
-let updateNote = document.getElementById('updatenote');
+const trackButton = document.getElementById('trackbutton');
+const updateNote = document.getElementById('updatenote');
 
 let isVideo = false;
 let model = null;
@@ -88,7 +93,7 @@ function toggleVideo() {
 	}
 }
 
-//Method to detect movement
+// Method to detect movement
 async function runDetection() {
 	const predictions = await model.detect(video);
 
@@ -104,10 +109,10 @@ async function runDetection() {
 	}
 }
 
-//Method to Change prediction data into useful information
+// Method to Change prediction data into useful information
 function changeData(value) {
-	let midvalX = value[0] + value[2] / 2;
-	let midvalY = value[1] + value[3] / 2;
+	const midvalX = value[0] + value[2] / 2;
+	const midvalY = value[1] + value[3] / 2;
 
 	// document.querySelector('.hand-1 #hand-x span').innerHTML = midvalX;
 	// document.querySelector('.hand-1 #hand-y span').innerHTML = midvalY;
@@ -116,10 +121,12 @@ function changeData(value) {
 	grasped && grasp();
 }
 
-//Method to use prediction data to render cude accordingly
+// Method to use prediction data to render cude accordingly
 function moveTheBox(value) {
-	drill.object3D.position.x = ((window.innerWidth * value.x) / window.innerWidth) * 5;
-	drill.object3D.position.y = -((window.innerHeight * value.y) / window.innerHeight) * 5;
+	drill.object3D.position.x =
+		((window.innerWidth * value.x) / window.innerWidth) * 5;
+	drill.object3D.position.y =
+		-((window.innerHeight * value.y) / window.innerHeight) * 5;
 	renderer.render(scene, camera);
 }
 
@@ -140,7 +147,12 @@ function collision() {
 }
 
 function inRange(x, y, baseX, baseY, range) {
-	if (x >= baseX - range && x <= baseX + range && y >= baseY - range && y <= baseY + range) {
+	if (
+		x >= baseX - range &&
+		x <= baseX + range &&
+		y >= baseY - range &&
+		y <= baseY + range
+	) {
 		return true;
 	}
 
@@ -148,8 +160,10 @@ function inRange(x, y, baseX, baseY, range) {
 }
 
 function grasp() {
-	tripod.object3D.position.x = drill.object3D.position.x - drillDimensions.x * 2;
-	tripod.object3D.position.y = drill.object3D.position.y + (drillDimensions.y - drillDimensions.y * 0.2);
+	tripod.object3D.position.x =
+		drill.object3D.position.x - drillDimensions.x * 2;
+	tripod.object3D.position.y =
+		drill.object3D.position.y + (drillDimensions.y - drillDimensions.y * 0.2);
 }
 
 init();
