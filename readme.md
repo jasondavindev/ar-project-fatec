@@ -2,9 +2,9 @@
 
 Projeto feito na disciplina (Interação Humano Computador curso de Lab3 curso de Banco De Dados) pelos alunos:
 
- - César Kelles Pinto
+ - César Kelles Pires
 
- - Jason Davinte
+ - Jason Carneiro
 
  - Tiago Coutinho
 
